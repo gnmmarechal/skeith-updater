@@ -4,7 +4,7 @@
 
 -- Run updated index.lua: If a file is available on the server, that file will be downloaded and used instead.
 -- Skipped if useupdate = 0
-isupdate = 0
+isupdate = 1
 if System.doesFileExist("/skeith-updater/usebgm") then
 	usebgm = 1
 else
@@ -89,8 +89,8 @@ usechainpayload = root..appinstallname.."-updater/nochain"
 
 --Server strings (some vars are declared by functions after reading the strings from the server)
 serverpath = "http://gs2012.xyz/3ds/"..selfname.."/"
-servergetnochainzippath = serverpath.."latest-skeith.txt"
-servergetchainzippath = serverpath.."latest-skeith-nochain.txt"
+servergetnochainzippath = serverpath.."latest-skeith.txt" --This is wrong
+servergetchainzippath = serverpath.."latest-skeith-nochain.txt" --This is wrong. The nochain txt downloads the chainloader=1 release. This is because I set these variables wrong, but, to avoid re-releasing, ended up switching the values on the server instead.
 
 
 -- Colours
