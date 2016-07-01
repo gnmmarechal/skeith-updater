@@ -326,9 +326,6 @@ function firstscreen() -- scr == 1
 	Screen.debugPrint(0,100,"Please select an option:", white, TOP_SCREEN)
 	Screen.debugPrint(0,120,"A) Clean Update (Recommended)", white, TOP_SCREEN)
 	Screen.debugPrint(0,140,"X) Dirty Update (Keep Config)", white, TOP_SCREEN)
-	if usenightly == 1 then
-		Screen.debugPrint(0,160,"Y) Nightly Update (Keep Config)", white, TOP_SCREEN)	
-	end
 	Screen.debugPrint(0,180,"B) Quit", white, TOP_SCREEN)
 	inputscr(2, KEY_A)
 	inputscr(4, KEY_X)
