@@ -1,28 +1,20 @@
---Corbenik CFW Updater
+--Skeith CFW Updater
 --Author: gnmmarechal
 --Runs on Lua Player Plus 3DS
 
 -- Run updated index.lua: If a file is available on the server, that file will be downloaded and used instead.
 -- Skipped if useupdate = 0
-isupdate = 1
-if System.doesFileExist("/corbenik-updater/usebgm") then
+isupdate = 0
+if System.doesFileExist("/skeith-updater/usebgm") then
 	usebgm = 1
 else
 	usebgm = 0
 end
 useupdate = 0
-updateserverlua = "http://gs2012.xyz/3ds/corbenikupdater/updatedindex.lua"
-System.createDirectory("/corbenik-updater")
---[[
--- Update script
-if isupdate == 0 then
-	coremajor = 0
-	coreminor = 3
-	corerev = 0
-	coreversionstring = coremajor.."."..coreminor.."."..corerev
-end
---]]
-if System.doesFileExist("/corbenik-updater/useupdate") then
+updateserverlua = "http://gs2012.xyz/3ds/skeithupdater/updatedindex.lua"
+System.createDirectory("/skeith-updater")
+
+if System.doesFileExist("/skeith-updater/useupdate") then
 	if isupdate == 0 then
 		useupdate = 1
 	else
@@ -32,11 +24,11 @@ else
 	useupdate = 0
 end
 if (Network.isWifiEnabled()) and useupdate == 1 then
-	if System.doesFileExist("/corbenik-updater/updatedindex.lua") then
-		System.deleteFile("/corbenik-updater/updatedindex.lua")
+	if System.doesFileExist("/skeith-updater/updatedindex.lua") then
+		System.deleteFile("/skeith-updater/updatedindex.lua")
 	end
-	Network.downloadFile(updateserverlua, "/corbenik-updater/updatedindex.lua")
-	dofile("/corbenik-updater/updatedindex.lua")
+	Network.downloadFile(updateserverlua, "/skeith-updater/updatedindex.lua")
+	dofile("/skeith-updater/updatedindex.lua")
 	System.exit()
 end	
 --End
@@ -48,18 +40,18 @@ if usebgm == 1 then
 		bgm = Sound.openWav("romfs:/bgm.wav",false)
 		Sound.play(bgm,LOOP)
 	end
-	if System.doesFileExist("/3ds/corbenikupdater/bgm.wav") then
-		bgm = Sound.openWav("/3ds/corbenik-updater/bgm.wav",false)
+	if System.doesFileExist("/3ds/skeithupdater/bgm.wav") then
+		bgm = Sound.openWav("/3ds/skeithupdater/bgm.wav",false)
 		Sound.play(bgm,LOOP)
 	end
-	if System.doesFileExist("/corbenik-updater/bgm.wav") then
-		bgm = Sound.openWav("/corbenik-updater/bgm.wav",false)
+	if System.doesFileExist("/skeith-updater/bgm.wav") then
+		bgm = Sound.openWav("/skeith-updater/bgm.wav",false)
 		Sound.play(bgm,LOOP)
-	elseif System.doesFileExist("/corbenik-updater/bgm.ogg") then
-		bgm = Sound.openOgg("/corbenik-updater/bgm.ogg",false)	
+	elseif System.doesFileExist("/skeith-updater/bgm.ogg") then
+		bgm = Sound.openOgg("/skeith-updater/bgm.ogg",false)	
 		Sound.play(bgm,LOOP)
-	elseif System.doesFileExist("/corbenik-updater/bgm.aiff") then
-		bgm = Sound.openAiff("/corbenik-updater/bgm.aiff",false)
+	elseif System.doesFileExist("/skeith-updater/bgm.aiff") then
+		bgm = Sound.openAiff("/skeith-updater/bgm.aiff",false)
 		Sound.play(bgm,LOOP)
 	end	
 end
@@ -79,30 +71,26 @@ versionmajor = 0
 versionminor = 4
 versionrev = 2
 versionstring = versionmajor.."."..versionminor.."."..versionrev
-versionrelno = 3
-selfname = "corbenikupdater"
+versionrelno = 1
+selfname = "skeithupdater"
 selfpath = consolehbdir..selfname.."/"
 selfexepath = selfpath..selfname..".3dsx" -- This is for the 3DSX version only
-selfstring = "Corbenik CFW Updater v."..versionstring
+selfstring = "Skeith CFW Updater v."..versionstring
 selfauthor = "gnmmarechal"
 
 --Affected app details
-appname = "Corbenik CFW"
-appinstallname = "corbenik"
+appname = "Skeith CFW"
+appinstallname = "skeith"
 appinstallpath = root
 downloadedzip = root..appinstallname..".zip"
 cfwpath = appinstallpath..appinstallname
 config = root..appinstallname.."-updater.cfg"
 usechainpayload = root..appinstallname.."-updater/nochain"
-nightlyfile = root..appinstallname.."-updater/usenightly"
 
 --Server strings (some vars are declared by functions after reading the strings from the server)
 serverpath = "http://gs2012.xyz/3ds/"..selfname.."/"
-servergetnochainzippath = serverpath.."latest.txt"
-servergetchainzippath = serverpath.."chainlatest.txt"
-servergetnightlyzippath = serverpath.."latest-nightly.txt" 
-servergetzipver = serverpath.."version.txt"
-servergetziprel = serverpath.."rel.cfg"
+servergetnochainzippath = serverpath.."latest-skeith.txt"
+servergetchainzippath = serverpath.."latest-skeith-nochain.txt"
 
 
 -- Colours
@@ -110,25 +98,6 @@ white = Color.new(255,255,255)
 green = Color.new(0,240,32)
 red = Color.new(255,0,0)
 
---Update-check functions
-
-
-function checkupdate() --Checks for new version of Corbenik CFW -- Apparently broken
-	if updatechecked == 0 then
-		if System.doesFileExist("/corbenikupdater/cfw-rel.cfg") then
-			relstream = io.open("/corbenikupdater/cfw-rel.cfg",FREAD)
-			localrel = io.read(relstream,0,io.size(relstream))
-			if tonumber(localrel) >= tonumber(serverrel) then
-				updated = 1
-			end
-			updatechecked = 1
-		else
-			System.createDirectory("/corbenikupdater")
-			Network.downloadFile(servergetziprel, "/corbenikupdater/cfw-rel.cfg")
-			updatechecked = 1
-		end
-	end
-end
 
 -- Server/network functions
 function iswifion()
@@ -145,8 +114,6 @@ end
 function servergetVars()
 	if iswifion() == 1 then
 		serverzippath = Network.requestString(servergetzippath)
-		serverver = Network.requestString(servergetzipver)
-		serverrel = Network.requestString(servergetziprel)
 	end
 end
 
@@ -239,19 +206,9 @@ function precheck()
 	else
 		servergetzippath = servergetchainzippath
 	end
-	if System.doesFileExist(nightlyfile) then
-		servergetzippath = servergetnightlyzippath
-		usenightly = 1	
-	else
-		usenightly = 0
-	end
 	if not System.doesFileExist(cfwpath.."/firmware/native") then
 		usenightly = 0
-		if System.doesFileExist(usechainpayload) then
-			servergetzippath = servergetnochainzippath
-		else
-			servergetzippath = servergetchainzippath
-		end
+		error("File not found. Please properly install Skeith CFW.") --TO ADD: Copy required files from the Corbenik directory if it exists.
 		newinstall = 1
 	else
 		newinstall = 0
@@ -273,7 +230,7 @@ end
 
 function installfilechecker()	
 	if newinstall == 1 then
-		if not System.doesFileExist("/corbenik-updater/firmware.bin") then
+		if not System.doesFileExist("/skeith-updater/firmware.bin") then
 		
 		end
 	end
@@ -317,10 +274,6 @@ function installnew()
 		end
 		System.createDirectory(root..appinstallname.."-BACKUP-"..h..m..s..day_value..day..month..year.."/chain")
 		System.renameDirectory(root..appinstallname.."-BACKUP-"..h..m..s..day_value..day..month..year.."/chain",cfwpath.."/chain")
-		if isnightly == 1 then
-			System.renameDirectory(root..appinstallname.."-BACKUP-"..h..m..s..day_value..day..month..year.."/locale",cfwpath.."/locale")
-			System.renameDirectory(root..appinstallname.."-BACKUP-"..h..m..s..day_value..day..month..year.."/contrib",cfwpath.."/contrib")
-		end
 		System.deleteFile(downloadedzip)
 	end
 	debugWrite(0,120,"DONE! Press A to reboot, B to quit!", green, TOP_SCREEN)
@@ -355,12 +308,12 @@ end
 function bottomscreen(no) -- if no = 1, the original, regular screen will show. If not, an error-screen will come up.
 	lowhead()
 	if no == 1 then	
-		Screen.debugPrint(0,20,"Latest CFW: "..serverver, green, BOTTOM_SCREEN)
+		Screen.debugPrint(0,20,"Latest CFW: ".."NIGHTLY", green, BOTTOM_SCREEN)
 --		Screen.debugPrint(0,20,"Core Version: "..coreversionstring, white, BOTTOM_SCREEN)
 		Screen.debugPrint(0,40,"Author: gnmmarechal", white, BOTTOM_SCREEN)
 		Screen.debugPrint(0,60,"Special Thanks:", white, BOTTOM_SCREEN)
 		Screen.debugPrint(0,80,"Rinnegatamante (LPP-3DS)", white, BOTTOM_SCREEN)
-		Screen.debugPrint(0,100,"Crystal the Glaceon (Testing)", white, BOTTOM_SCREEN)
+		Screen.debugPrint(0,100,"Crystal the Glaceon (Testing C-UP)", white, BOTTOM_SCREEN)
 	else
 		Screen.debugPrint(0,20,"Internet connection failed.", red, BOTTOM_SCREEN)
 	end
@@ -369,7 +322,7 @@ end
 
 function firstscreen() -- scr == 1
 	head()
-	Screen.debugPrint(0,40,"Welcome to Corbenik CFW Updater!", white, TOP_SCREEN)
+	Screen.debugPrint(0,40,"Welcome to Skeith CFW Updater!", white, TOP_SCREEN)
 	Screen.debugPrint(0,100,"Please select an option:", white, TOP_SCREEN)
 	Screen.debugPrint(0,120,"A) Clean Update (Recommended)", white, TOP_SCREEN)
 	Screen.debugPrint(0,140,"X) Dirty Update (Keep Config)", white, TOP_SCREEN)
